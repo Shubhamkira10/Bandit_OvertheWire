@@ -442,6 +442,7 @@
             <pre>bandit21@bandit:/etc/cron.d$ <span class="yellow-text">ls</span></pre>
             <p>Read a specific file:</p>
             <pre>bandit21@bandit:/etc/cron.d$ <span class="yellow-text">cat cronjob_bandit22</span></pre>
+            <p>Try to read and understand the script</p>
             <pre>bandit21@bandit:/etc/cron.d$ <span class="yellow-text">cat /usr/bin/cronjob_bandit22.sh</span></pre>
             <P>Something like this will be visible /tmp/RESULT</P>
             <pre>bandit21@bandit:/etc/cron.d$ <span class="yellow-text">cat /tmp/RESULT</span></pre>
@@ -458,6 +459,7 @@
             <pre>bandit22@bandit:/etc/cron.d$ <span class="yellow-text">ls</span></pre>
             <p>Read a specific file:</p>
             <pre>bandit22@bandit:/etc/cron.d$ <span class="yellow-text">cat cronjob_bandit23</span></pre>
+            <p>Try to read and understand the script</p>
             <pre>bandit22@bandit:/etc/cron.d$ <span class="yellow-text">cat /usr/bin/cronjob_bandit23.sh</span></pre>
             <pre>bandit22@bandit:/etc/cron.d$ <span class="yellow-text">myname=bandit23</span></pre>
             <pre>bandit22@bandit:/etc/cron.d$ <span class="yellow-text">echo I am user $myname | md5sum | cut -d ' ' -f 1</span></pre>
@@ -473,14 +475,198 @@
             <p>Command to change directory:</p>
             <pre>bandit23@bandit:~$ <span class="yellow-text">cd /etc/cron.d</span></pre>
             <p>Command to list files in the directory:</p>
-            <pre>bandit22@bandit:/etc/cron.d$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit23@bandit:/etc/cron.d$ <span class="yellow-text">ls</span></pre>
             <p>Read a specific file:</p>
             <pre>bandit23@bandit:/etc/cron.d$ <span class="yellow-text">cat cronjob_bandit24</span></pre>
+            <p>Try to read and understand the script</p>
             <pre>bandit23@bandit:/etc/cron.d$ <span class="yellow-text">cat /usr/bin/cronjob_bandit24.sh</span></pre>
-            <pre>bandit23@bandit:/etc/cron.d$ <span class="yellow-text">myname=bandit23</span></pre>
-            <pre>bandit23@bandit:/etc/cron.d$ <span class="yellow-text">echo I am user $myname | md5sum | cut -d ' ' -f 1</span></pre>
-            <p>OUTPUT will be there </p>
-            <pre>bandit22@bandit:/etc/cron.d$ <span class="yellow-text">cat /tmp/OUTPUT</span></pre>
+            <pre>bandit23@bandit:/etc/cron.d$ <span class="yellow-text">mktemp</span></pre>
+            <P>your temporaray file "TEMP_FILE" is created</P>
+            <pre>bandit23@bandit:/etc/cron.d$ <span class="yellow-text">vi "TEMP_FILE"</span></pre>
+            <p>Press "Insert" button and paste the following script, then press "Esc" button and type ":wq"</p>
+            <p>#!/bin/bash</p>
+            <p>cp /etc/bandit_pass/bandit24 "TEMP_FILE"</p>
+            <pre>bandit23@bandit:/etc/cron.d$ <span class="yellow-text">cp "TEMP_FILE" /var/spool/bandit24/foo </span></pre>
+            <p>wait for a moment and run this command to obtain the password fro next level  </p>
+            <pre>bandit23@bandit:/etc/cron.d$ <span class="yellow-text">cat "TEMP_FILE"</span></pre>
+        </article>
+
+        <article>
+            <h3>Level 24 → Level 25</h3>
+            <p><strong>Goal:</strong>A daemon is listening on port 30002 and will give you the password for bandit25 if given the password for bandit24 and a secret numeric 4-digit pincode. There is no way to retrieve the pincode except by going through all of the 10000 combinations, called brute-forcing.You do not need to create new connections each time.</p>
+            <p>Command to log in:</p>
+            <pre>sshpass -p "{password}" ssh bandit24@bandit.labs.overthewire.org -p 2220</pre>
+            <pre>bandit24@bandit:~$ <span class="yellow-text">rough=$(mktemp -d)</span></pre>
+            <p>Command to change directory:</p>
+            <pre>bandit24@bandit:~$ <span class="yellow-text">cd $rough</span></pre>
+            <pre>bandit24@bandit:/tmp/tmp.srNuFcUz6y$ <span class="yellow-text">vi bruteForce.sh</span></pre>
+            <p>Press "Insert" button and paste the following script, then press "Esc" button and type ":wq"</p>
+            <p>#!/bin/bash</p>
+            <p>for i in {0000..9999}</p>
+            <p>do</p>
+            <p>    echo "CURRENT_LEVEL_PASSWORD" $i</p>
+            <p>done</p>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit24@bandit:/tmp/tmp.srNuFcUz6y$ <span class="yellow-text">ls</span></pre>
+            <p>Giving permissions to directory and file</p>
+            <pre>bandit24@bandit:/tmp/tmp.srNuFcUz6y$ <span class="yellow-text">chmod 777 .</span></pre>
+            <pre>bandit24@bandit:/tmp/tmp.srNuFcUz6y$ <span class="yellow-text">chmod 777 bruteForce.sh</span></pre>
+            <p>wait for a moment and run this command to obtain the password fro next level  </p>
+            <pre>bandit24@bandit:/tmp/tmp.srNuFcUz6y$ <span class="yellow-text">./passwordBruteForce.sh | nc localhost 30002</span></pre>
+        </article>
+
+        <article>
+            <h3>Level 25 → Level 26</h3>
+            <p><strong>Goal:</strong>Logging in to bandit26 from bandit25 should be fairly easy… The shell for user bandit26 is not /bin/bash, but something else. Find out what it is, how it works and how to break out of it.</p>
+            <p>Command to log in:</p>
+            <pre>sshpass -p "{password}" ssh bandit25@bandit.labs.overthewire.org -p 2220</pre>
+            <pre>bandit25@bandit:~$ <span class="yellow-text">ls</span></pre>
+            <p>Command to log in as bandit26:</p>
+            <pre>bandit25@bandit:~$ <span class="yellow-text">ssh -i bandit26.sshkey bandit26@localhost -p 2220</span></pre>
+            <p> It's  diifucult level,one minimize the terminal and find "More" word</p>
+            <p>Press "v" button</p>
+            <p>run command ":set shell=/bin/bash" and press "Enter" button</p>
+            <p>run command ":shell" and press "Enter" button</p>
+            <pre>bandit26@bandit:~$ <span class="yellow-text">cat /etc/bandit_pass/bandit26</span></pre>
+        </article>
+
+        <article>
+            <h3>Level 26 → Level 27</h3>
+            <p><strong>Goal:</strong>Good job getting a shell! Now hurry and grab the password for bandit27!.</p>
+            <p>Continuing from previous Level 25 → Level 26</p>
+            <p>Command to grab the password:</p>
+            <pre>bandit26@bandit:~$ <span class="yellow-text">./bandit27-do cat /etc/bandit_pass/bandit27</span></pre>
+        </article>
+
+        <article>
+            <h3>Level 27 → Level 28</h3>
+            <p><strong>Goal:</strong>There is a git repository at ssh://bandit27-git@localhost/home/bandit27-git/repo via the port 2220. The password for the user bandit27-git is the same as for the user bandit27. Clone the repository and find the password for the next level.</p>
+            <p>Command to log in:</p>
+            <pre>sshpass -p "{password}" ssh bandit27@bandit.labs.overthewire.org -p 2220</pre>
+            <pre>bandit27@bandit:~$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit27@bandit:~$ <span class="yellow-text">rough=$(mktemp -d)</span></pre>
+            <pre>bandit27@bandit:~$ <span class="yellow-text">cd $rough</span></pre>
+            <pre>bandit27@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">git clone ssh://bandit27-git@localhost:2220/home/bandit27-git/repo</span></pre>
+            <p>Enter the current level password</p>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit27@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">ls</span></pre>
+            <p>Command to change directory:</p>
+            <pre>bandit27@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">cd repo</span></pre>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit27@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">ls</span></pre>
+            <p>grab the password from the README file</p>
+            <pre>bandit27@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">cat README</span></pre>
+        </article>
+
+        <article>
+            <h3>Level 28 → Level 29</h3>
+            <p><strong>Goal:</strong>There is a git repository at ssh://bandit28-git@localhost/home/bandit28-git/repo via the port 2220. The password for the user bandit28-git is the same as for the user bandit28. Clone the repository and find the password for the next level.</p>
+            <p>Command to log in:</p>
+            <pre>sshpass -p "{password}" ssh bandit28@bandit.labs.overthewire.org -p 2220</pre>
+            <pre>bandit28@bandit:~$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit28@bandit:~$ <span class="yellow-text">rough=$(mktemp -d)</span></pre>
+            <pre>bandit28@bandit:~$ <span class="yellow-text">cd $rough</span></pre>
+            <pre>bandit28@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">git clone ssh://bandit28-git@localhost:2220/home/bandit28-git/repo</span></pre>
+            <p>Enter the current level password</p>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit28@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">ls</span></pre>
+            <p>Command to change directory:</p>
+            <pre>bandit28@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">cd repo</span></pre>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit28@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit28@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">cat README.md</span></pre>
+            <pre>bandit28@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">git log --all</span></pre>
+            <p>Grab the password by checkcing the previous commits :</p>
+            <pre>bandit28@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">git log -p -1</span></pre>
+        </article>
+
+        <article>
+            <h3>Level 29 → Level 30</h3>
+            <p><strong>Goal:</strong>There is a git repository at ssh://bandit29-git@localhost/home/bandit29-git/repo via the port 2220. The password for the user bandit29-git is the same as for the user bandit29. Clone the repository and find the password for the next level.</p>
+            <p>Command to log in:</p>
+            <pre>sshpass -p "{password}" ssh bandit29@bandit.labs.overthewire.org -p 2220</pre>
+            <pre>bandit29@bandit:~$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit29@bandit:~$ <span class="yellow-text">rough=$(mktemp -d)</span></pre>
+            <pre>bandit29@bandit:~$ <span class="yellow-text">cd $rough</span></pre>
+            <pre>bandit29@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">git clone ssh://bandit29-git@localhost:2220/home/bandit29-git/repo</span></pre>
+            <p>Enter the current level password</p>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit29@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">ls</span></pre>
+            <p>Command to change directory:</p>
+            <pre>bandit29@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">cd repo</span></pre>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit29@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit29@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">cat README.md</span></pre>
+            <pre>bandit29@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">git log --all</span></pre>
+            <p>Grab the password by checkcing the previous commits :</p>
+            <pre>bandit29@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">git log --all -p</span></pre>
+        </article>
+
+        <article>
+            <h3>Level 30 → Level 31</h3>
+            <p><strong>Goal:</strong>There is a git repository at ssh://bandit30-git@localhost/home/bandit30-git/repo via the port 2220. The password for the user bandit30-git is the same as for the user bandit30. Clone the repository and find the password for the next level.</p>
+            <p>Command to log in:</p>
+            <pre>sshpass -p "{password}" ssh bandit30@bandit.labs.overthewire.org -p 2220</pre>
+            <pre>bandit30@bandit:~$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit30@bandit:~$ <span class="yellow-text">rough=$(mktemp -d)</span></pre>
+            <pre>bandit30@bandit:~$ <span class="yellow-text">cd $rough</span></pre>
+            <pre>bandit30@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">git clone ssh://bandit30-git@localhost:2220/home/bandit30-git/repo</span></pre>
+            <p>Enter the current level password</p>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit30@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">ls</span></pre>
+            <p>Command to change directory:</p>
+            <pre>bandit30@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">cd repo</span></pre>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit30@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit30@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">cat README.md</span></pre>
+            <pre>bandit30@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">git tag</span></pre>
+            <p>Grab the password :</p>
+            <pre>bandit30@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">git show secret</span></pre>
+        </article>
+
+        <article>
+            <h3>Level 31 → Level 32</h3>
+            <p><strong>Goal:</strong>There is a git repository at ssh://bandit31-git@localhost/home/bandit31-git/repo via the port 2220. The password for the user bandit31-git is the same as for the user bandit31. Clone the repository and find the password for the next level.</p>
+            <p>Command to log in:</p>
+            <pre>sshpass -p "{password}" ssh bandit31@bandit.labs.overthewire.org -p 2220</pre>
+            <pre>bandit31@bandit:~$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit31@bandit:~$ <span class="yellow-text">rough=$(mktemp -d)</span></pre>
+            <pre>bandit31@bandit:~$ <span class="yellow-text">cd $rough</span></pre>
+            <pre>bandit31@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">git clone ssh://bandit31-git@localhost:2220/home/bandit31-git/repo</span></pre>
+            <p>Enter the current level password</p>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit31@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">ls</span></pre>
+            <p>Command to change directory:</p>
+            <pre>bandit31@bandit:/tmp/tmp.SwfcqDAeg7$ <span class="yellow-text">cd repo</span></pre>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit31@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit31@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">cat README.md</span></pre>
+            <pre>bandit31@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">echo 'May I come in?' > key.txt</span></pre>
+            <pre>bandit31@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">git add -f key.txt</span></pre>
+            <pre>bandit31@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">git commit -m "anything"</span></pre>
+            <p>Watch carefully and grab the password :</p>
+            <pre>bandit31@bandit:/tmp/tmp.SwfcqDAeg7/repo$ <span class="yellow-text">git push</span></pre>
+        </article>
+
+        <article>
+            <h3>Level 32 → Level 33</h3>
+            <p><strong>Goal:</strong>After all this git stuff, it's time for another escape. Good luck!.</p>
+            <p>Command to log in:</p>
+            <pre>sshpass -p "{password}" ssh bandit32@bandit.labs.overthewire.org -p 2220</pre>
+            <p>WELCOME TO THE UPPERCASE SHELL</p>
+            <pre>>> <span class="yellow-text">ls</span></pre>
+            <pre>>> <span class="yellow-text">$0</span></pre>
+            <pre>$ <span class="yellow-text">cat /etc/bandit_pass/bandit32 </span></pre>
+        </article>
+
+        <article>
+            <h3>Level 33 → Level 34</h3>
+            <p><strong>Goal:</strong>At this moment, level 34 does not exist yet.</p>
+            <p>Command to log in:</p>
+            <pre>sshpass -p "{password}" ssh bandit33@bandit.labs.overthewire.org -p 2220</pre>
+            <p>Command to list files in the directory:</p>
+            <pre>bandit31@bandit:~$ <span class="yellow-text">ls</span></pre>
+            <pre>bandit31@bandit:~$ <span class="yellow-text">cat README.txt</span></pre>
         </article>
 
     </section>
