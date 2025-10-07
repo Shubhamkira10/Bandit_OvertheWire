@@ -360,7 +360,7 @@
             <p>Find open ports in the range 31000-32000</p>
             <pre>bandit16@bandit:~$ <span class="yellow-text">nmap -p 31000-32000 localhost</span></pre>
             <p>Once you have the list of open ports, check which ones support SSL/TLS. You can use ncat or openssl for this:</p>
-            <pre>bandit16@bandit:~$ <span class="yellow-text">ncat --ssl localhost "CORRECT_PORT" </span></pre>
+            <pre>bandit16@bandit:~$ <span class="yellow-text">openssl s_client -connect localhost:"CORRECT_PORT -quiet</span></pre>
             <p>Copy the RSA PRIVATE KEY and paste in a file "sshkey"</p>
             <pre>bandit16@bandit:~$ <span class="yellow-text">rough=$(mktemp -d)</span></pre>
             <pre>bandit16@bandit:~$ <span class="yellow-text">cd $rough</span></pre>
@@ -675,4 +675,5 @@
     </footer>
 </body>
 </html>
+
 
