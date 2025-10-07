@@ -98,18 +98,13 @@
 
         <article>
             <h3>Level 2 → Level 3</h3>
-            <p><strong>Goal:</strong> Find the password in a file named 'spaces in this filename'.</p>
+            <p><strong>Goal:</strong> Find the password in a file named '--spaces in this filename--'.</p>
             <p>Command to log in:</p>
             <pre>sshpass -p "{password}" ssh bandit2@bandit.labs.overthewire.org -p 2220</pre>
             <p>Command to list files in the directory:</p>
             <pre>bandit2@bandit:~$ <span class="yellow-text">ls</span></pre>
             <p>Commands to read the password from file 'spaces in this filename':</p>
-            <pre>bandit2@bandit:~$ <span class="yellow-text">cat "spaces in this filename"</span></pre>
-            <pre>bandit2@bandit:~$ <span class="yellow-text">cat 'spaces in this filename'</span></pre>
-            <pre>bandit2@bandit:~$ <span class="yellow-text">cat spaces\ in\ this\ filename</span></pre>
-            <pre>bandit2@bandit:~$ <span class="yellow-text">cat spaces*filename</span></pre>
-            <pre>bandit2@bandit:~$ <span class="yellow-text">cat spaces?in?this?filename</span></pre>
-            <pre>bandit2@bandit:~$ <span class="yellow-text">cat "$(ls)"</span></pre>
+            <pre>bandit2@bandit:~$ <span class="yellow-text">cat ./--spaces\ in\ this\ filename--</span></pre>
             <pre>bandit2@bandit:~$ <span class="yellow-text">cat -- "spaces in this filename"</span></pre>
             <pre>bandit2@bandit:~$ <span class="yellow-text">find . -name "spaces in this filename" -exec cat {} \;</span></pre>
         </article>
@@ -673,6 +668,7 @@
     </footer>
 </body>
 </html>
+
 
 
 
